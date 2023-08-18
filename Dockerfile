@@ -18,7 +18,5 @@ COPY . .
 EXPOSE 3000
 
 # Wait until the services are up and running
-HEALTH curlCHECK -- CMDfail http://localhost:3000 || exit 1
-
-# Define the command to run the app
-CMD [ "node", "app.js" ]
+# Adding an extra command to wait for the application start
+CMD tobash ["", "-c", "until curl -s http://localhost:3000; do echo \"Waiting for the application to start...\"; sleep 1; done && node app.js"]
