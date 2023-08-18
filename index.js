@@ -56,30 +56,24 @@ app.use("/contracts", contractRoutes);
 app.use("/contactsByQuantity", contactsByQuantity);
 
 /* MONGOOSE SETUP */
-const express = require('express')
-const mongoose = require('mongoose')
+const PORT = process.env.PORT || 9000;
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
 
-const app = express()
-const PORT = process.env.PORT || 3000
-
-const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGO_URL);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.log(error);
-    process.exit(1);
-  }
-}
-
-//Routes go here
-app.all('*', (req,res) => {
-    res.json({"every thing":"is awesome"})
-})
-
-//Connect to the database before listening
-connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log("listening for requests");
-    })
-})
+    /* ONLY ADD DATA ONE TIME */
+    // AffiliateStat.insertMany(dataAffiliateStat);
+    // OverallStat.insertMany(dataOverallStat);
+     //Product.insertMany(dataProduct);
+     //ProductStat.insertMany(dataProductStat);
+     //Clients.insertMany(dataClient);
+     Contracts.insertMany(dataContracts);
+     //Contacts.insertMany(dataContacts);
+    //User.insertMany(dataUser);
+    //Services.insertMany(dataServices);
+  })
+  .catch((error) => console.log(`${error} did not connect`));
