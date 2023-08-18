@@ -1,28 +1,28 @@
-import express from "express";
-import bodyParser from "body-parser";
-import mongoose from "mongoose";
-import cors from "cors";
-import dotenv from "dotenv";
-import helmet from "helmet";
-import morgan from "morgan";
-import userRoutes from "./routes/accounts.js";
-import clientsRoutes from "./routes/clients.js";
-import serviceRoutes from "./routes/services.js";
-import contactRoutes from "./routes/contacts.js";
-import contractRoutes from "./routes/contracts.js";
-import contactsByQuantity from "./routes/contactsByQuantity.js";
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const helmet = require("helmet");
+const morgan = require("morgan");
+const userRoutes = require("./routes/accounts.js");
+const clientsRoutes = require("./routes/clients.js");
+const serviceRoutes = require("./routes/services.js");
+const contactRoutes = require("./routes/contacts.js");
+const contractRoutes = require("./routes/contracts.js");
+const contactsByQuantity = require("./routes/contactsByQuantity.js");
 
 // data imports
-import User from "./models/User.js";
-import Clients from "./models/Clients.js";
-import Contacts from "./models/Contact.js";
-import Contracts from "./models/Contract.js";
-import ProductStat from "./models/ProductStat.js";
-import OverallStat from "./models/OverallStat.js";
-import AffiliateStat from "./models/AffiliateStat.js";
-import Services from "./models/Service.js";
-import ContactByQuantity from "./models/ContactByQuantity.js";
-import {
+const User = require("./models/User.js");
+const Clients = require("./models/Clients.js");
+const Contacts = require("./models/Contact.js");
+const Contracts = require("./models/Contract.js");
+const ProductStat = require("./models/ProductStat.js");
+const OverallStat = require("./models/OverallStat.js");
+const AffiliateStat = require("./models/AffiliateStat.js");
+const Services = require("./models/Service.js");
+const ContactByQuantity = require("./models/ContactByQuantity.js");
+const {
   dataUser,
   //dataProduct,
   //dataProductStat,
@@ -33,8 +33,8 @@ import {
   dataClient,
   dataContacts,
   dataContracts,
-} from "./data/index.js";
-import { getUser, getUsers } from "./controllers/users.js";
+} = require("./data/index.js");
+const { getUser, getUsers } = require("./controllers/users.js");
 
 /* CONFIGURATION */
 dotenv.config();
@@ -68,11 +68,11 @@ mongoose
     /* ONLY ADD DATA ONE TIME */
     // AffiliateStat.insertMany(dataAffiliateStat);
     // OverallStat.insertMany(dataOverallStat);
-     //Product.insertMany(dataProduct);
-     //ProductStat.insertMany(dataProductStat);
-     //Clients.insertMany(dataClient);
-     Contracts.insertMany(dataContracts);
-     //Contacts.insertMany(dataContacts);
+    //Product.insertMany(dataProduct);
+    //ProductStat.insertMany(dataProductStat);
+    //Clients.insertMany(dataClient);
+    Contracts.insertMany(dataContracts);
+    //Contacts.insertMany(dataContacts);
     //User.insertMany(dataUser);
     //Services.insertMany(dataServices);
   })
