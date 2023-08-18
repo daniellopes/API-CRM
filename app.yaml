@@ -1,0 +1,99 @@
+# Import statements
+import:
+  - module: express
+    from: "express"
+  - module: body-parser
+    from: "body-parser"
+  - module: mongoose
+    from: "mongoose"
+  - module: cors
+    from: "cors"
+  - module: dotenv
+    from: "dotenv"
+  - module: helmet
+    from: "helmet"
+  - module: morgan
+    from: "morgan"
+  - module: ./routes/accounts.js
+    as: userRoutes
+  - module: ./routes/clients.js
+    as: clientsRoutes
+  - module: ./routes/services.js
+    as: serviceRoutes
+  - module: ./routes/contacts.js
+    as: contactRoutes
+  - module: ./routes/contracts.js
+    as: contractRoutes
+  - module: ./routes/contactsByQuantity.js
+    as: contactsByQuantity
+  - module: ./models/User.js
+    as: User
+  - module: ./models/Clients.js
+    as: Clients
+  - module: ./models/Contact.js
+    as: Contacts
+  - module: ./models/Contract.js
+    as: Contracts
+  - module: ./models/ProductStat.js
+    as: ProductStat
+  - module: ./models/OverallStat.js
+    as: OverallStat
+  - module: ./models/AffiliateStat.js
+    as: AffiliateStat
+  - module: ./models/Service.js
+    as: Services
+  - module: ./models/ContactByQuantity.js
+    as: ContactByQuantity
+  - module: ./data/index.js
+    as: dataImports
+  - module: ./controllers/users.js
+    named: getUser
+  - module: ./controllers/users.js
+    named: getUsers
+
+# Configuration
+configuration:
+  - dotenv.config: {}
+
+  - app: express()
+    use:
+      - express.json: {}
+
+      - helmet():
+          useCrossOriginResourcePolicy:
+            policy: "cross-origin"
+
+      - morgan("common"): {}
+
+      - bodyParser.json: {}
+
+      - bodyParser.urlencoded:
+          extended: false
+
+      - cors(): {}
+
+# Routes
+routes:
+  - app.use:
+      - "/accounts": userRoutes
+      - "/clients": clientsRoutes
+      - "/services": serviceRoutes
+      - "/contacts": contactRoutes
+      - "/contracts": contractRoutes
+      - "/contactsByQuantity": contactsByQuantity
+
+# Mongoose Setup
+mongoose:
+  connect:
+    method: mongoose.connect
+    arguments:
+      - "{{ process.env.MONGO_URL }}"
+      - useNewUrlParser: true
+      - useUnifiedTopology: true
+    then:
+      - app.listen:
+          arguments:
+            - "{{ process.env.PORT or 9000 }}"
+          callback: console.log("Server Port: {{ process.env.PORT or 9000 }}")
+
+      - Contracts.insertMany: "{{ dataImports.dataContracts }}"
